@@ -4,6 +4,9 @@
     <div class="d-flex">
       <router-link to="/" class="me-3 py-2 d-inline-block">Livres</router-link>
       <router-link :to="{ name: 'about' }" class="py-2 d-inline-block">À propos</router-link>
+      <router-link :to="{ name: 'login' }" class="py-2 d-inline-block">Connexion</router-link>
+      <router-link :to="{ name: 'signup' }" class="ms-3 py-2 d-inline-block">Inscription</router-link>
+
     </div>
   </nav>
 </template>

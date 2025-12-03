@@ -14,16 +14,16 @@ export const useAuthStore = defineStore('auth', () => {
     return false
   })
 
-  const API = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:3000'
+  const API_BASE = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:3000'
 
-  async function login(username, password) {
+  async function login(email, password) {
     try {
-      const response = await fetch(`${API}/login`, {
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ login: username, password })
+        body: JSON.stringify({ email: email, password: password })
       })
 
       if (!response.ok) {
@@ -41,6 +41,26 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function signup(username, password, first_name, last_name, email) {
+    try {
+      const response = await fetch(`${API_BASE}/auth/signup`, {
+        method: 'POST',
+        body: JSON.stringify({ username: username, password: password, first_name: first_name, last_name: last_name, email: email })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erreur inconnue');
+      }
+
+      return await response.json()
+
+    } catch (error) {
+      console.log("erreur: ", error)
+      throw error;
+    }
+  }
+
   function logout() {
     token.value = null
     localStorage.removeItem('token');
@@ -50,6 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     isAuthenticated,
     login,
+    signup,
     logout
   }
 })
