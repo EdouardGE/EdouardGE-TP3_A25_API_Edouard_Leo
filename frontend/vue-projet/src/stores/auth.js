@@ -6,12 +6,16 @@ export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') || null);
 
   const isAuthenticated = computed(() => {
-    if (token.value) {
-      const decoded = jwtDecode(token.value)
-      const now = Date.now() / 1000
-      return decoded.exp >= now
+    try {
+      if (!token.value) return false;
+
+      const decoded = jwtDecode(token.value);
+      const now = Date.now() / 1000;
+
+      return decoded.exp >= now;
+    } catch (err) {
+      return false;
     }
-    return false
   })
 
   const API_BASE = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:3000'
@@ -45,6 +49,9 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await fetch(`${API_BASE}/auth/signup`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ username: username, password: password, first_name: first_name, last_name: last_name, email: email })
       })
 

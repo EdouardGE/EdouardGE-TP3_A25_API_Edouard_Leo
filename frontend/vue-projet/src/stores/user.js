@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function fetchUsers() {
     try {
-      const response = await fetch(`${API}/api/users`, {
+      const response = await fetch(`${API}/api/users/profile`, {
         headers: {
           'Authorization': `Bearer ${authStore.token}`
         }

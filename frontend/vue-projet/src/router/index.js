@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import AboutView from '@/views/AboutView.vue'
+import ProfileView from '@/views/ProfileView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +32,25 @@ const router = createRouter({
       name: 'signup',
       component: SignupView,
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
+      meta: { requiresAuth: true }
+    },
+
+
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore()
+
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return next('/login')
+  }
+
+  next()
 })
 
 export default router
