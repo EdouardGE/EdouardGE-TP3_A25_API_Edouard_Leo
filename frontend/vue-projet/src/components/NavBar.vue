@@ -7,6 +7,7 @@
       <router-link :to="{ name: 'login' }" class="py-2 d-inline-block">Connexion</router-link>
       <router-link :to="{ name: 'signup' }" class="ms-3 py-2 d-inline-block">Inscription</router-link>
       <router-link :to="{ name: 'profile' }">Mon Profil</router-link>
+      <router-link :to="{name: 'book-create'}" class="ms-3 py-2 d-inline-block">Ajouter un livre</router-link>
 
     </div>
   </nav>

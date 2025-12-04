@@ -5,7 +5,7 @@ import { useAuthStore } from './auth'
 
 export const useBookStore = defineStore('book', () => {
   const books = ref([])
-  const API = import.meta.env?.VITE_API_BASE_URL || 'http://localhost:3000'
+  const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
   const authStore = useAuthStore()
   const bookCount = computed(() => books.value.length)
 
@@ -36,7 +36,7 @@ export const useBookStore = defineStore('book', () => {
     }
   }
 
-  async function addBook(newBook) {
+  async function addBook(payload) {
     try {
       const response = await fetch(`${API}/api/livres`, {
         method: 'POST',
@@ -44,15 +44,17 @@ export const useBookStore = defineStore('book', () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authStore.token}`
         },
-        body: JSON.stringify(newBook)
+        body: JSON.stringify(payload)
       })
+
+      const data = await response.json()
+
       if (!response.ok) {
-        const errData = await response.json()
-        throw new Error(errData.message || 'Erreur lors de l’ajout du livre')
+        throw new Error(data.message || 'Erreur lors de l’ajout du livre')
       }
-      const addedBook = await response.json()
-      books.value.push(addedBook)
-      return addedBook
+      books.value.push(data)
+      return data
+
     } catch (error) {
       console.error(error)
       throw error

@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import AboutView from '@/views/AboutView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import BookCreateView from '@/views/BookCreateView.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -36,6 +37,12 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/books/create',
+      name: 'book-create',
+      component: BookCreateView,
       meta: { requiresAuth: true }
     },
 
